@@ -3,93 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Valentines Flowers - Order your flowers online </title>
-    <link rel="stylesheet" href="../OrderFlowers/tutorial9.css">
+    <title>Valentine's Flowers - Order Online</title>
+    <link rel="stylesheet" href="tutorial9.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <h1>Valentine's Flowers</h1>
+    </header>
+    
     <div class="container">
-        <h1> Valentines Flowers </h1>
+        <div class="products" id="productList"></div>
+    </div>
 
-        <div class="product" id="product1">
-            <img src="../OrderFlowers/images/white.jpeg" alt="White Bouquet">
-            <div class="description">White Bouquet</div>
-            <div class="price">£24</div>
-        </div>
+    <div class="order-section">
+        <h2>Your Order</h2>
+        <div id="cart"></div>
+        <p>Total: <span id="totalPrice">£0</span></p>
+        <label for="deliveryDate">Delivery Date:</label>
+        <input type="date" id="deliveryDate">
+        <button id="checkout">Checkout</button>
+    </div>
 
-        <div class="product" id="product2">
-            <img src="../OrderFlowers/images/pink.jpeg" alt="Pink Bouquet">
-            <div class="description">Pink Bouquet</div>
-            <div class="price">£30</div>
-        </div>
-
-        <div class="product" id="product3">
-            <img src="../OrderFlowers/images/red.jpeg" alt="Red Bouquet">
-            <div class="description">Red Bouquet</div>
-            <div class="price">£35</div>
-        </div>
-
-        <div class="product" id="product4">
-            <img src="../OrderFlowers/images/yellow.jpeg" alt="Yellow Bouquet">
-            <div class="description">Yellow Bouquet</div>
-            <div class="price">£42</div>
-        </div>
-
-        <div class="product" id="product5">
-            <img src="../OrderFlowers/images/blue.jpeg" alt="Blue Bouquet">
-            <div class="description">Blue Bouquet</div>
-            <div class="price">£28</div>
-        </div>
-
-        <div class="product" id="product6">
-            <img src="../OrderFlowers/images/multi.jpg" alt="Multi color Bouquet">
-            <div class="description">Multi color Bouquet</div>
-            <div class="price"></div>
-        </div>
-
-
-        <div class="labelOrder">
-            Your Order:
-            <div id="orderDescription"></div>
-            <div class="product" id="order"></div>
-        </div>
-
-        <form id="flowerForm">
-            <label for="bouquetOptions">Choose your bouquet:</label> 
-            <select id="bouquetOptions" name="bouquetOptions">
-                <option value="pleaseSelect">Please Select</option>
-                <option value="withChampagne">With Champagne</option>
-                <option value="extra">50% Extra Flowers</option>
-                <option value="extraWithChampagne">50% Extra Flowers & Champagne</option> 
-            </select> 
-
-            <fieldset class="selectFlowers">
-                <br>
-                <legend>Select Color:</legend>
-                <input type="radio" id="white" name="colour" value="white">
-                <label for="white">White</label>
-
-                <input type="radio" id="pink" name="colour" value="pink">
-                <label for="pink">Pink</label>
-
-                <input type="radio" id="red" name="colour" value="red">
-                <label for="red">Red</label>
-
-                <input type="radio" id="yellow" name="colour" value="yellow">
-                <label for="yellow">Yellow</label>
-
-                <input type="radio" id="blue" name="colour" value="blue">
-                <label for="blue">Blue</label>
-
-                <input type="radio" id="multi" name="colour" value="multi">
-                <label for="multi">Multi colors</label>
-            </fieldset>
-
-            <input type="button" value="Place your order" onclick="displayBouquet()" class="placeOrder">
-            <input type="reset" value="Reset" class="resetOrder"> <br> <br>
-        </form>
-
-    </div> <br><br><br>
-
-    <script src="../OrderFlowers/tutorial9.js"></script>
+    <script src="tutorial9.js"></script>
 </body>
 </html>
