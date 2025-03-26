@@ -29,6 +29,7 @@ h1 {
 .product {
     background: white;
     padding: 15px;
+    border: 2px solid rgb(233, 106, 106);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
@@ -45,7 +46,8 @@ h1 {
 }
 
 button {
-    background-color: #d63384;
+    font-size: medium;
+    background-color: #c54786;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -59,11 +61,16 @@ button:hover {
 }
 
 .order-section {
-    margin-top: 30px;
+    margin-top: 80px;
+    margin-bottom: 50px;
     padding: 20px;
     background: white;
+    border: 2px solid rgb(240, 54, 116);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     width: 300px;
     margin: auto;
+}
+.cham{
+    font-weight: bold;
 }

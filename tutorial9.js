@@ -1,15 +1,16 @@
 document.addEventListener("DOMContentLoaded", function() {
     const products = [
-        { id: 1, name: "White Bouquet", price: 24, img: "images/white.jpeg" },
-        { id: 2, name: "Pink Bouquet", price: 30, img: "images/pink.jpeg" },
-        { id: 3, name: "Red Bouquet", price: 35, img: "images/red.jpeg" },
-        { id: 4, name: "Yellow Bouquet", price: 42, img: "images/yellow.jpeg" },
-        { id: 5, name: "Blue Bouquet", price: 28, img: "images/blue.jpeg" },
-        { id: 6, name: "Multi Bouquet", price: 40, img: "images/multi.jpg" }
+        { id: 1, name: "White Bouquet", price: 24, img: "images/white.jpeg", champagneImg: "images/white_champagne.jpeg" },
+        { id: 2, name: "Pink Bouquet", price: 30, img: "images/pink.jpeg", champagneImg: "images/pink_champagne.jpeg" },
+        { id: 3, name: "Red Bouquet", price: 35, img: "images/red.jpeg", champagneImg: "images/red_champagne.jpeg" },
+        { id: 4, name: "Yellow Bouquet", price: 42, img: "images/yellow.jpeg", champagneImg: "images/yellow_champagne.jpeg" },
+        { id: 5, name: "Blue Bouquet", price: 28, img: "images/blue.jpeg", champagneImg: "images/blue_champagne.jpeg" },
+        { id: 6, name: "Multi Bouquet", price: 40, img: "images/multi.jpg", champagneImg: "images/multi_champagne.jpg" }
     ];
     
     const productList = document.getElementById("productList");
     const cart = [];
+    let champagneAdded = false;
     
     function renderProducts() {
         productList.innerHTML = "";
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const productDiv = document.createElement("div");
             productDiv.classList.add("product");
             productDiv.innerHTML = `
-                <img src="${product.img}" alt="${product.name}">
+                <img id="img${product.id}" src="${product.img}" alt="${product.name}">
                 <h3>${product.name}</h3>
                 <p>£${product.price}</p>
                 <button onclick="addToCart(${product.id})">Add to Cart</button>
@@ -48,8 +49,21 @@ document.addEventListener("DOMContentLoaded", function() {
             cartDiv.innerHTML += `<p>${item.name} (x${item.quantity}) - £${item.price * item.quantity}</p>`;
         });
         
+        if (champagneAdded) {
+            total += 10;
+            cartDiv.innerHTML += `<p>Champagne Added - £10</p>`;
+        }
+        
         totalPriceEl.textContent = `£${total}`;
     }
+    
+    window.toggleChampagne = function() {
+        champagneAdded = document.getElementById("champagne").checked;
+        products.forEach(product => {
+            document.getElementById(`img${product.id}`).src = champagneAdded ? product.champagneImg : product.img;
+        });
+        renderCart();
+    };
     
     renderProducts();
 });

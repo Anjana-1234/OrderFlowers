@@ -20,8 +20,13 @@
         <h2>Your Order</h2>
         <div id="cart"></div>
         <p>Total: <span id="totalPrice">£0</span></p>
+        
+        <label for="champagne" class="cham">Add Champagne (£10 extra):</label>
+        <input type="checkbox" id="champagne" onchange="toggleChampagne()"> <br><br>
+        
         <label for="deliveryDate">Delivery Date:</label>
-        <input type="date" id="deliveryDate">
+        <input type="date" id="deliveryDate"> <br> <br>
+        
         <button id="checkout">Checkout</button>
     </div>
 
