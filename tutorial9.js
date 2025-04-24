@@ -65,6 +65,30 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         renderCart();
     };
+
+    document.getElementById("checkout").addEventListener("click", function () {
+        const deliveryDate = document.getElementById("deliveryDate").value;
+        
+        if (!deliveryDate) {
+            alert("Please select a delivery date.");
+            return;
+        }
+    
+        const selectedDate = new Date(deliveryDate);
+        const today = new Date();
+        
+        // Remove the time part to compare only dates
+        selectedDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+    
+        if (selectedDate <= today) {
+            alert("Please select a future date for delivery.");
+            return;
+        }
+    
+        alert("Thank you! Your order has been placed.");
+    });
+    
     
     renderProducts();
 });
