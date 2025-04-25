@@ -83,3 +83,35 @@ button:hover {
     transition: opacity 0.3s ease;
 }
 
+@media (max-width: 768px) {
+    h1 {
+        font-size: 28px;
+        margin: 15px 0;
+    }
+
+    .products {
+        grid-template-columns: 1fr; /* 1 column layout */
+        gap: 20px;
+        padding: 10px;
+    }
+
+    .product {
+        padding: 10px;
+    }
+
+    .product img {
+        width: 100%;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .order-section {
+        width: 90%;
+        margin-top: 50px;
+    }
+}
+
+
