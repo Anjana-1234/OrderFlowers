@@ -205,3 +205,46 @@ button:hover {
     color: #b61d69;
 }
 
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-content h2 {
+    color: #c54786;
+}
+
+.modal-content p {
+    margin: 10px 0;
+}
+
+.close {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+    color: #333;
+}
+
+.close:hover {
+    color: #c54786;
+}

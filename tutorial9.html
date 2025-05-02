@@ -64,6 +64,18 @@
         <button id="checkout">Checkout</button>
     </div>
 
+    <!-- Checkout Confirmation Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Order Confirmation</h2>
+            <div id="orderSummary"></div>
+            <p><strong>Total:</strong> <span id="modalTotal">£0</span></p>
+            <p><strong>Delivery Date:</strong> <span id="modalDate"></span></p>
+        </div>
+    </div>
+
+
     <script src="tutorial9.js"></script>
 </body>
 </html>

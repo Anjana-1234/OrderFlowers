@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const productList = document.getElementById("productList");
 
-    // Load saved state or default
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     let champagneAdded = JSON.parse(localStorage.getItem("champagne")) || false;
 
@@ -27,14 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const sortValue = document.getElementById("sort").value;
         const filterValue = document.getElementById("filter").value;
 
-        // Filter by color
         if (filterValue !== "all") {
             filteredProducts = filteredProducts.filter(p =>
                 p.name.toLowerCase().includes(filterValue)
             );
         }
 
-        // Sort by price
         if (sortValue === "asc") {
             filteredProducts.sort((a, b) => a.price - b.price);
         } else if (sortValue === "desc") {
@@ -131,26 +128,45 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        alert("Thank you! Your order has been placed.");
+        // Build order summary HTML
+        let summaryHTML = "";
+        cart.forEach(item => {
+            summaryHTML += `<p>${item.name} (x${item.quantity}) - £${item.price * item.quantity}</p>`;
+        });
+
+        if (champagneAdded) {
+            summaryHTML += `<p>Champagne Added - £10</p>`;
+        }
+
+        const totalText = document.getElementById("totalPrice").textContent;
+        const deliveryDateText = document.getElementById("deliveryDate").value;
+
+        document.getElementById("orderSummary").innerHTML = summaryHTML;
+        document.getElementById("modalTotal").textContent = totalText;
+        document.getElementById("modalDate").textContent = deliveryDateText;
+
+        document.getElementById("checkoutModal").style.display = "block";
     });
 
     const deliveryInput = document.getElementById("deliveryDate");
     const today = new Date().toISOString().split("T")[0];
     deliveryInput.setAttribute("min", today);
 
-    // Restore saved champagne state
     document.getElementById("champagne").checked = champagneAdded;
-
-    // Setup event listeners for sort/filter
     document.getElementById("sort").addEventListener("change", renderProducts);
     document.getElementById("filter").addEventListener("change", renderProducts);
 
     renderProducts();
-    renderCart(); // Show previously saved cart
-    toggleChampagne(); // Update bouquet images
+    renderCart();
+    toggleChampagne();
 });
 
-// Hamburger menu toggle (for mobile nav)
+// Modal close function
+function closeModal() {
+    document.getElementById("checkoutModal").style.display = "none";
+}
+
+// Mobile menu toggle
 function toggleMenu() {
     document.getElementById("navLinks").classList.toggle("show");
 }
