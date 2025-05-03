@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="tutorial9.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="./images/logo.jpg" alt="Logo" id="logo-image" />
+      Valentine's Flowers
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Shop</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="delivery.html">Delivery</a></li>
+    </ul>
+  </nav>
+
+  <h1>Your Cart</h1>
+
+  <div class="order-section" id="cartSection">
+    <div id="cartItems"></div>
+    <p><strong>Total:</strong> <span id="cartTotal">£0</span></p>
+    <button onclick="window.location.href='delivery.html'">Continue to Delivery</button>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("show");
+    }
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const champagneAdded = localStorage.getItem("champagneAdded") === "true";
+    const cartItemsDiv = document.getElementById("cartItems");
+    const cartTotalEl = document.getElementById("cartTotal");
+
+    function renderCart() {
+      cartItemsDiv.innerHTML = "";
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
+        cartTotalEl.textContent = "£0";
+        return;
+      }
+
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        const p = document.createElement("p");
+        p.textContent = `${item.name} (x${item.quantity}) - £${itemTotal}`;
+        cartItemsDiv.appendChild(p);
+      });
+
+      if (champagneAdded) {
+        total += 10;
+        const p = document.createElement("p");
+        p.textContent = "Champagne Added - £10";
+        cartItemsDiv.appendChild(p);
+      }
+
+      cartTotalEl.textContent = `£${total}`;
+    }
+
+    renderCart();
+  </script>
+
+</body>
+</html>
