@@ -10,14 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     const productList = document.getElementById("productList");
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let champagneAdded = JSON.parse(localStorage.getItem("champagne")) || false;
-
-    function saveToLocalStorage() {
-        localStorage.setItem("cart", JSON.stringify(cart));
-        localStorage.setItem("champagne", JSON.stringify(champagneAdded));
-    }
+    const cart = [];
+    let champagneAdded = false;
 
     function renderProducts() {
         productList.innerHTML = "";
@@ -26,12 +20,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const sortValue = document.getElementById("sort").value;
         const filterValue = document.getElementById("filter").value;
 
+        // Filter
         if (filterValue !== "all") {
             filteredProducts = filteredProducts.filter(p =>
                 p.name.toLowerCase().includes(filterValue)
             );
         }
 
+        // Sort
         if (sortValue === "asc") {
             filteredProducts.sort((a, b) => a.price - b.price);
         } else if (sortValue === "desc") {
@@ -60,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
             cart.push({ ...product, quantity: 1 });
         }
         renderCart();
-        saveToLocalStorage();
     };
 
     function renderCart() {
@@ -88,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById(`img${product.id}`).src = champagneAdded ? product.champagneImg : product.img;
         });
         renderCart();
-        saveToLocalStorage();
     };
 
     function animatePrice(element, newTotal) {
@@ -128,45 +122,22 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Build order summary HTML
-        let summaryHTML = "";
-        cart.forEach(item => {
-            summaryHTML += `<p>${item.name} (x${item.quantity}) - £${item.price * item.quantity}</p>`;
-        });
-
-        if (champagneAdded) {
-            summaryHTML += `<p>Champagne Added - £10</p>`;
-        }
-
-        const totalText = document.getElementById("totalPrice").textContent;
-        const deliveryDateText = document.getElementById("deliveryDate").value;
-
-        document.getElementById("orderSummary").innerHTML = summaryHTML;
-        document.getElementById("modalTotal").textContent = totalText;
-        document.getElementById("modalDate").textContent = deliveryDateText;
-
-        document.getElementById("checkoutModal").style.display = "block";
+        alert("Thank you! Your order has been placed.");
     });
 
+    // Set min date for delivery
     const deliveryInput = document.getElementById("deliveryDate");
     const today = new Date().toISOString().split("T")[0];
     deliveryInput.setAttribute("min", today);
 
-    document.getElementById("champagne").checked = champagneAdded;
+    // Sort/filter listeners
     document.getElementById("sort").addEventListener("change", renderProducts);
     document.getElementById("filter").addEventListener("change", renderProducts);
 
     renderProducts();
-    renderCart();
-    toggleChampagne();
 });
 
-// Modal close function
-function closeModal() {
-    document.getElementById("checkoutModal").style.display = "none";
-}
-
-// Mobile menu toggle
+// Hamburger toggle (outside DOMContentLoaded)
 function toggleMenu() {
     document.getElementById("navLinks").classList.toggle("show");
 }
