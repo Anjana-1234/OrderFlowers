@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delivery - Valentine's Flowers</title>
+  <link rel="stylesheet" href="shop.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="./images/logo.jpg" alt="logo" id="logo-image" />
+      Valentine's Flowers
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="delivery.html">Delivery</a></li>
+    </ul>
+  </nav>
+
+  <h1>Delivery Details</h1>
+
+  <!-- Cart Summary -->
+  <div class="order-section">
+    <h2>Your Order</h2>
+    <div id="cartSummary"></div>
+    <p><strong>Total:</strong> <span id="totalPrice">£0</span></p>
+  </div>
+
+  <!-- Delivery Form -->
+  <div class="order-section">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required><br><br>
+
+    <label for="deliveryDate">Delivery Date:</label>
+    <input type="date" id="deliveryDate" required><br><br>
+
+    <button id="confirmOrder">Confirm Order</button>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Thank You!</h2>
+      <p>Your order has been placed successfully.</p>
+      <div id="finalSummary"></div>
+    </div>
+  </div>
+
+  <script src="delivery.js"></script>
+</body>
+</html>
