@@ -31,22 +31,14 @@
   </div>
 
   <script>
-    function toggleMenu() {
-      document.getElementById("navLinks").classList.toggle("show");
-    }
-
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const champagneAdded = localStorage.getItem("champagneAdded") === "true";
-    const cartItemsDiv = document.getElementById("cartItems");
-    const cartTotalEl = document.getElementById("cartTotal");
-
-    function renderCart() {
-      cartItemsDiv.innerHTML = "";
+    document.addEventListener("DOMContentLoaded", function () {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const cartItemsDiv = document.getElementById("cartItems");
+      const totalPriceEl = document.getElementById("cartTotal");
       let total = 0;
 
       if (cart.length === 0) {
         cartItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
-        cartTotalEl.textContent = "£0";
         return;
       }
 
@@ -59,17 +51,9 @@
         cartItemsDiv.appendChild(p);
       });
 
-      if (champagneAdded) {
-        total += 10;
-        const p = document.createElement("p");
-        p.textContent = "Champagne Added - £10";
-        cartItemsDiv.appendChild(p);
-      }
-
-      cartTotalEl.textContent = `£${total}`;
-    }
-
-    renderCart();
+      totalPriceEl.textContent = `£${total.toFixed(2)}`;
+    });
+    
   </script>
 
 </body>
