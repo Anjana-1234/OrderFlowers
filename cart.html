@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Cart</title>
   <link rel="stylesheet" href="shop.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
-  <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="nav-logo">
       <img src="./images/logo.jpg" alt="Logo" id="logo-image" />
@@ -17,44 +16,45 @@
     <div class="hamburger" onclick="toggleMenu()">☰</div>
     <ul class="nav-links" id="navLinks">
       <li><a href="shop.html">Shop</a></li>
-      <li><a href="cart.html">Cart</a></li>
+      <li><a href="cart.html" class="active">Cart</a></li>
       <li><a href="delivery.html">Delivery</a></li>
     </ul>
   </nav>
 
   <h1>Your Cart</h1>
 
-  <div class="order-section" id="cartSection">
-    <div id="cartItems"></div>
-    <p><strong>Total:</strong> <span id="cartTotal">£0</span></p>
-    <button onclick="window.location.href='delivery.html'">Continue to Delivery</button>
+  <div class="cart-container">
+    <div class="cart-items" id="cartItems">
+      <!-- Items will be populated by JavaScript -->
+    </div>
+    
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      <div id="summaryDetails"></div>
+      <p class="total">Total: <span id="cartTotal">£0</span></p>
+      
+      <label for="champagne" class="cham">
+        <input type="checkbox" id="champagne"> Add Champagne (£10 extra)
+      </label>
+      
+      <button class="checkout-btn" onclick="window.location.href='delivery.html'">
+        Proceed to Delivery
+      </button>
+    </div>
   </div>
 
+  <div id="emptyCart" class="empty-cart">
+    <img src="./images/empty-cart.png" alt="Empty cart" width="150">
+    <h2>Your cart is empty</h2>
+    <p>Looks like you haven't added anything to your cart yet</p>
+    <button onclick="window.location.href='shop.html'">Continue Shopping</button>
+  </div>
+
+  <script src="cart.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const cartItemsDiv = document.getElementById("cartItems");
-      const totalPriceEl = document.getElementById("cartTotal");
-      let total = 0;
-
-      if (cart.length === 0) {
-        cartItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
-        return;
-      }
-
-      cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-
-        const p = document.createElement("p");
-        p.textContent = `${item.name} (x${item.quantity}) - £${itemTotal}`;
-        cartItemsDiv.appendChild(p);
-      });
-
-      totalPriceEl.textContent = `£${total.toFixed(2)}`;
-    });
-    
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("show");
+    }
   </script>
-
 </body>
 </html>
