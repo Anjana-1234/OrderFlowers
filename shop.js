@@ -1,3 +1,11 @@
+window.addToCart = function (id) {
+    const product = products.find(p => p.id === id);
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // ... rest of the function remains the same
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+};
+
 document.addEventListener("DOMContentLoaded", function () {
     const products = [
         { id: 1, name: "White Bouquet", price: 24, img: "images/white.jpeg", champagneImg: "images/white_champagne.jpeg" },

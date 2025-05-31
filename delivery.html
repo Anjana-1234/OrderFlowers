@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Delivery - Valentine's Flowers</title>
   <link rel="stylesheet" href="shop.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-logo">
       <img src="./images/logo.jpg" alt="logo" id="logo-image" />
@@ -17,43 +17,102 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="shop.html">Shop</a></li>
       <li><a href="cart.html">Cart</a></li>
-      <li><a href="delivery.html">Delivery</a></li>
+      <li><a href="delivery.html" class="active">Delivery</a></li>
     </ul>
   </nav>
 
-  <h1>Delivery Details</h1>
-
-  <!-- Cart Summary -->
-  <div class="order-section">
-    <h2>Your Order</h2>
-    <div id="cartSummary"></div>
-    <p><strong>Total:</strong> <span id="totalPrice">£0</span></p>
-  </div> <br>
-
-  <!-- Delivery Form -->
-  <div class="order-section">
-    <label for="name">Name:</label>
-    <input type="text" id="name" required><br><br>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" required><br><br>
-
-    <label for="deliveryDate">Delivery Date:</label>
-    <input type="date" id="deliveryDate" required><br><br>
-
-    <button id="confirmOrder">Confirm Order</button>
+  <div class="delivery-container">
+    <div class="delivery-form">
+      <h1>Delivery Details</h1>
+      
+      <form id="deliveryForm">
+        <div class="form-group">
+          <label for="name">Full Name*</label>
+          <input type="text" id="name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email*</label>
+          <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Phone Number*</label>
+          <input type="tel" id="phone" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Delivery Address*</label>
+          <textarea id="address" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="deliveryDate">Delivery Date*</label>
+            <input type="date" id="deliveryDate" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="deliveryTime">Delivery Time</label>
+            <select id="deliveryTime">
+              <option value="anytime">Anytime</option>
+              <option value="morning">Morning (9am-12pm)</option>
+              <option value="afternoon">Afternoon (12pm-5pm)</option>
+              <option value="evening">Evening (5pm-9pm)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="instructions">Special Instructions</label>
+          <textarea id="instructions" rows="2" placeholder="e.g., Leave with neighbor if not home"></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">Place Order</button>
+      </form>
+    </div>
+    
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      <div id="cartSummary"></div>
+      <div class="summary-total">
+        <p>Total: <span id="totalPrice">£0</span></p>
+      </div>
+    </div>
   </div>
 
   <!-- Confirmation Modal -->
   <div id="confirmationModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
+      <img src="./images/order-confirmed.png" alt="Order confirmed" width="100">
       <h2>Thank You!</h2>
       <p>Your order has been placed successfully.</p>
-      <div id="finalSummary"></div>
+      
+      <div class="order-details" id="finalSummary"></div>
+      
+      <div class="order-number">
+        <p>Order #: <span id="orderNumber"></span></p>
+      </div>
+      
+      <button onclick="window.location.href='shop.html'" class="continue-shopping">
+        Continue Shopping
+      </button>
     </div>
   </div>
 
   <script src="delivery.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("show");
+    }
+    
+    // Set min date for delivery
+    const deliveryInput = document.getElementById("deliveryDate");
+    const today = new Date().toISOString().split("T")[0];
+    if (deliveryInput) {
+      deliveryInput.setAttribute("min", today);
+    }
+  </script>
 </body>
 </html>
