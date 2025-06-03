@@ -1,26 +1,35 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Get cart data from localStorage
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const champagneAdded = JSON.parse(localStorage.getItem("champagne")) || false;
+    const champagne = JSON.parse(localStorage.getItem("champagne")) || false;
+    const emptyCartMessage = document.getElementById("emptyCartMessage");
+    const deliveryContent = document.getElementById("deliveryContent");
     const cartSummaryDiv = document.getElementById("cartSummary");
     const totalPriceEl = document.getElementById("totalPrice");
     const deliveryForm = document.getElementById("deliveryForm");
     const confirmationModal = document.getElementById("confirmationModal");
-    const finalSummaryDiv = document.getElementById("finalSummary");
-    const orderNumberSpan = document.getElementById("orderNumber");
+    const deliveryInput = document.getElementById("deliveryDate");
 
-    // Display order summary
+    // Set min date for delivery (today)
+    const today = new Date().toISOString().split("T")[0];
+    if (deliveryInput) {
+        deliveryInput.setAttribute("min", today);
+    }
+
+    // Check if cart is empty
+    if (cart.length === 0) {
+        emptyCartMessage.style.display = "block";
+        deliveryContent.style.display = "none";
+        return;
+    } else {
+        emptyCartMessage.style.display = "none";
+        deliveryContent.style.display = "flex";
+    }
+
+    // Display order summary in the right panel
     function displayOrderSummary() {
         cartSummaryDiv.innerHTML = "";
         let total = 0;
-
-        // if (cart.length === 0) {
-        //     // Redirect to cart if empty
-        //     setTimeout(() => {
-        //         window.location.href = "cart.html";
-        //     }, 1500);
-        //     return;
-        // }
 
         cart.forEach(item => {
             const itemTotal = item.price * item.quantity;
@@ -37,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
             cartSummaryDiv.appendChild(itemDiv);
         });
 
-        if (champagneAdded) {
+        if (champagne) {
             total += 10;
             const champagneDiv = document.createElement("div");
             champagneDiv.className = "summary-item";
@@ -54,73 +63,92 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Form submission handler
-    if (deliveryForm) {
-        deliveryForm.addEventListener("submit", function(e) {
-            e.preventDefault();
-            
-            // Validate form
-            const name = document.getElementById("name").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const phone = document.getElementById("phone").value.trim();
-            const address = document.getElementById("address").value.trim();
-            const deliveryDate = document.getElementById("deliveryDate").value;
-            
-            if (!name || !email || !phone || !address || !deliveryDate) {
-                alert("Please fill in all required fields");
-                return;
-            }
-            
-            // Show confirmation modal
-            showOrderConfirmation(name, email, phone, address, deliveryDate);
-        });
-    }
+    deliveryForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        
+        // Validate form
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const address = document.getElementById("address").value.trim();
+        const deliveryDate = document.getElementById("deliveryDate").value;
+        
+        if (!name || !email || !phone || !address || !deliveryDate) {
+            alert("Please fill in all required fields");
+            return;
+        }
+        
+        // Validate email format
+        if (!validateEmail(email)) {
+            alert("Please enter a valid email address");
+            return;
+        }
+        
+        // Validate phone number (basic validation)
+        if (!validatePhone(phone)) {
+            alert("Please enter a valid phone number");
+            return;
+        }
+        
+        // Validate delivery date is in the future
+        const selectedDate = new Date(deliveryDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (selectedDate <= today) {
+            alert("Please select a future delivery date");
+            return;
+        }
+        
+        // Show confirmation modal
+        showOrderConfirmation(name, email, phone, address, deliveryDate);
+    });
 
-    // Show order confirmation
+    // Show order confirmation modal
     function showOrderConfirmation(name, email, phone, address, deliveryDate) {
         const deliveryTime = document.getElementById("deliveryTime").value;
         const instructions = document.getElementById("instructions").value;
         
         // Generate random order number
         const orderNumber = "VF" + Math.floor(Math.random() * 1000000);
-        orderNumberSpan.textContent = orderNumber;
+        document.getElementById("orderNumber").textContent = orderNumber;
         
-        // Build summary
-        let summaryHTML = `
-            <div class="customer-info">
-                <p><strong>Customer:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Phone:</strong> ${phone}</p>
-            </div>
-            
-            <div class="delivery-info">
-                <p><strong>Delivery Address:</strong> ${address}</p>
-                <p><strong>Delivery Date:</strong> ${formatDate(deliveryDate)}</p>
-                <p><strong>Delivery Time:</strong> ${getTimeText(deliveryTime)}</p>
-                ${instructions ? `<p><strong>Instructions:</strong> ${instructions}</p>` : ''}
-            </div>
-            
-            <div class="order-items">
-                <h3>Order Items</h3>
-        `;
+        // Update confirmation fields
+        document.getElementById("confirmEmail").textContent = email;
+        document.getElementById("confirmPhone").textContent = phone;
+        document.getElementById("confirmAddress").textContent = address;
+        document.getElementById("confirmDate").textContent = formatDate(deliveryDate);
+        document.getElementById("confirmTime").textContent = getTimeText(deliveryTime);
+        document.getElementById("confirmTotal").textContent = totalPriceEl.textContent;
         
-        cart.forEach(item => {
-            summaryHTML += `
-                <p>${item.name} (x${item.quantity}) - £${(item.price * item.quantity).toFixed(2)}</p>
-            `;
-        });
-        
-        if (champagneAdded) {
-            summaryHTML += `<p>Champagne - £10.00</p>`;
+        // Handle special instructions
+        const instructionsElement = document.getElementById("confirmInstructions");
+        if (instructions) {
+            instructionsElement.style.display = "block";
+            document.getElementById("instructionsText").textContent = instructions;
+        } else {
+            instructionsElement.style.display = "none";
         }
         
-        summaryHTML += `
-            </div>
-            <div class="order-total">
-                <p><strong>Total:</strong> ${totalPriceEl.textContent}</p>
-            </div>
-        `;
+        // Build order items list
+        const orderItemsList = document.getElementById("orderItemsList");
+        orderItemsList.innerHTML = "";
         
-        finalSummaryDiv.innerHTML = summaryHTML;
+        cart.forEach(item => {
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "order-item";
+            itemDiv.innerHTML = `
+                <p>${item.name} (x${item.quantity}) - £${(item.price * item.quantity).toFixed(2)}</p>
+            `;
+            orderItemsList.appendChild(itemDiv);
+        });
+        
+        if (champagne) {
+            const champagneDiv = document.createElement("div");
+            champagneDiv.className = "order-item";
+            champagneDiv.innerHTML = `<p>Champagne - £10.00</p>`;
+            orderItemsList.appendChild(champagneDiv);
+        }
         
         // Show modal
         confirmationModal.style.display = "flex";
@@ -146,8 +174,19 @@ document.addEventListener("DOMContentLoaded", function() {
         return times[timeValue] || "Anytime during the day";
     }
 
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function validatePhone(phone) {
+        // Basic validation - at least 6 digits
+        const re = /^[0-9]{6,}$/;
+        return re.test(phone);
+    }
+
     window.closeModal = function() {
-        document.getElementById("confirmationModal").style.display = "none";
+        confirmationModal.style.display = "none";
     };
 
     // Close modal when clicking outside
