@@ -481,7 +481,6 @@ button:hover {
 .payment-option span {
     font-weight: normal;
 }
-
 /* Modal Styles */
 .modal {
     display: none;
@@ -497,7 +496,7 @@ button:hover {
 }
 
 .modal-content {
-    background: white;
+    background: rgb(240, 218, 218);
     padding: 30px;
     border-radius: 10px;
     width: 90%;
