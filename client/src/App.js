@@ -1,36 +1,37 @@
 // Import BrowserRouter for page navigation
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Import our Navbar component
+// Import CartProvider so the whole app can share cart data
+import { CartProvider } from './context/CartContext';
+
+// Import Navbar component
 import Navbar from './components/Navbar';
 
 // Import all pages
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
+import GiftsPage from './pages/GiftsPage';
 import CartPage from './pages/CartPage';
 
-// Main App - sets up all pages and navigation
 function App() {
   return (
-    // BrowserRouter enables navigation between pages
-    <BrowserRouter>
+    // CartProvider wraps everything so all pages can access cart functions
+    <CartProvider>
+      <BrowserRouter>
 
-      {/* Navbar shows on every page */}
-      <Navbar />
+        {/* Navbar shows on every page */}
+        <Navbar />
 
-      {/* Routes - decides which page to show based on URL */}
-      <Routes>
-        {/* Home page at localhost:3000/ */}
-        <Route path="/" element={<HomePage />} />
+        {/* Routes - decides which page to show based on URL */}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/gifts" element={<GiftsPage />} />
+          <Route path="/cart" element={<CartPage />} />
+        </Routes>
 
-        {/* Shop page at localhost:3000/shop */}
-        <Route path="/shop" element={<ShopPage />} />
-
-        {/* Cart page at localhost:3000/cart */}
-        <Route path="/cart" element={<CartPage />} />
-      </Routes>
-
-    </BrowserRouter>
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 
