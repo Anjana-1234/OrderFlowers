@@ -10,6 +10,9 @@ const mongoose = require('mongoose');
 // Import dotenv to load secret values from .env file
 require('dotenv').config();
 
+// Import our product routes
+const productRoutes = require('./routes/productRoutes');
+
 // Create the express app
 const app = express();
 
@@ -22,17 +25,18 @@ app.use(cors());
 // Connect to MongoDB using the connection string from .env
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    // This runs only if the connection succeeds
     console.log('✅ Connected to MongoDB successfully');
   })
   .catch((error) => {
-    // This runs if the connection fails - shows the error reason
     console.log('❌ MongoDB connection failed:', error.message);
   });
 
+// Tell express to use our product routes for any URL starting with /api/products
+app.use('/api/products', productRoutes);
+
 // A simple test route - visiting this in browser confirms server works
 app.get('/', (req, res) => {
-  res.send('Valentine\'s Flowers API is running 🌸');
+  res.send('Valentine\'s Flowers API is running');
 });
 
 // Set the port - use 5000 unless something else is specified in .env
