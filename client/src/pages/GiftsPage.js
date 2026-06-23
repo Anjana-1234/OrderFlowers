@@ -1,15 +1,75 @@
+// useState and useEffect for fetching and storing data
+import { useState, useEffect } from 'react';
+
 // Import Link to navigate back to Shop page
 import { Link } from 'react-router-dom';
 
-// Import gift data and reusable card component
-import giftsData from '../data/giftsData';
+// Import our pre-configured axios instance
+import api from '../api/axiosConfig';
+
+// Import the image map (filename -> actual image)
+import giftImages from '../data/giftsData';
+
+// Import reusable card component
 import GiftCard from '../components/GiftCard';
 
 function GiftsPage() {
+
+  // Holds the list of gifts fetched from the backend
+  const [gifts, setGifts] = useState([]);
+
+  // Tracks whether data is still loading
+  const [loading, setLoading] = useState(true);
+
+  // Tracks if something went wrong while fetching
+  const [error, setError] = useState(null);
+
+  // Runs once when the page first loads
+  useEffect(() => {
+    async function fetchGifts() {
+      try {
+        // Call GET /api/products/gifts
+        const response = await api.get('/products/gifts');
+
+        // Attach the correct image to each gift using our image map
+        const giftsWithImages = response.data.map((gift) => ({
+          ...gift,
+          id: gift._id, // rename MongoDB's _id to id for consistency
+          image: giftImages[gift.image],
+        }));
+
+        setGifts(giftsWithImages);
+        setLoading(false);
+      } catch (err) {
+        setError('Could not load gifts. Please make sure the server is running.');
+        setLoading(false);
+      }
+    }
+
+    fetchGifts();
+  }, []);
+
+  // Show loading message
+  if (loading) {
+    return (
+      <div style={{ padding: '60px', textAlign: 'center' }}>
+        <p style={{ fontSize: '18px', color: '#e91e8c' }}>Loading gifts... 🎁</p>
+      </div>
+    );
+  }
+
+  // Show error message
+  if (error) {
+    return (
+      <div style={{ padding: '60px', textAlign: 'center' }}>
+        <p style={{ fontSize: '16px', color: 'red' }}>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '30px' }}>
 
-      {/* Header row with title and back-to-shop button */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -21,7 +81,6 @@ function GiftsPage() {
       }}>
         <h1 style={{ color: '#e91e8c', margin: 0 }}>Gift Items </h1>
 
-        {/* Link back to shop page */}
         <Link to="/shop">
           <button style={{
             backgroundColor: 'white',
@@ -42,7 +101,6 @@ function GiftsPage() {
         Add a little extra to your bouquet — pick one or more gifts below.
       </p>
 
-      {/* Grid of gift cards */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -50,8 +108,7 @@ function GiftsPage() {
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
-        {/* Loop through giftsData and render a GiftCard for each */}
-        {giftsData.map((gift) => (
+        {gifts.map((gift) => (
           <GiftCard key={gift.id} gift={gift} />
         ))}
       </div>
