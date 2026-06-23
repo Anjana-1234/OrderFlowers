@@ -1,4 +1,4 @@
-// Import Link to navigate to shop if cart is empty
+// Import Link to navigate to shop if cart is empty, and to checkout page
 import { Link } from 'react-router-dom';
 
 // Import useCart hook to access cart data and functions
@@ -153,20 +153,22 @@ function CartPage() {
         <h2 style={{ color: '#e91e8c', margin: 0 }}>£{getCartTotal().toFixed(2)}</h2>
       </div>
 
-      {/* Checkout button - will connect to delivery/payment later */}
+      {/* Checkout button - navigates to the checkout form page */}
       <div style={{ textAlign: 'center', marginTop: '25px' }}>
-        <button style={{
-          backgroundColor: '#e91e8c',
-          color: 'white',
-          border: 'none',
-          padding: '14px 40px',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontSize: '16px',
-          fontWeight: 'bold'
-        }}>
-          Proceed to Checkout
-        </button>
+        <Link to="/checkout">
+          <button style={{
+            backgroundColor: '#e91e8c',
+            color: 'white',
+            border: 'none',
+            padding: '14px 40px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold'
+          }}>
+            Proceed to Checkout
+          </button>
+        </Link>
       </div>
 
     </div>

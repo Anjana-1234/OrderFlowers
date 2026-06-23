@@ -13,6 +13,9 @@ require('dotenv').config();
 // Import our product routes
 const productRoutes = require('./routes/productRoutes');
 
+//Import our order routes
+const orderRoutes = require('./routes/orderRoutes');
+
 // Create the express app
 const app = express();
 
@@ -33,6 +36,9 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Tell express to use our product routes for any URL starting with /api/products
 app.use('/api/products', productRoutes);
+
+//Tell express to use our order routes for any URL starting with /api/orders
+app.use('/api/orders', orderRoutes);
 
 // A simple test route - visiting this in browser confirms server works
 app.get('/', (req, res) => {

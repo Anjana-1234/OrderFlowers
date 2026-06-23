@@ -52,6 +52,11 @@ export function CartProvider({ children }) {
     });
   }
 
+  // Function to empty the entire cart - called after a successful order
+  function clearCart() {
+    setCartItems([]);
+  }
+
   // Function to calculate the total price of everything in the cart
   function getCartTotal() {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -65,7 +70,15 @@ export function CartProvider({ children }) {
   // Provide these values and functions to any page that needs them
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, updateQuantity, getCartTotal, getCartCount }}
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        getCartTotal,
+        getCartCount,
+      }}
     >
       {children}
     </CartContext.Provider>
