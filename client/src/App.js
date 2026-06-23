@@ -12,6 +12,8 @@ import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
 import GiftsPage from './pages/GiftsPage';
 import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import OrderConfirmationPage from './pages/OrderConfirmationPage';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/gifts" element={<GiftsPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/order-confirmation/:id" element={<OrderConfirmationPage />} />
         </Routes>
 
       </BrowserRouter>

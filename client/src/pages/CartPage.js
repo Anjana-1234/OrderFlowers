@@ -1,4 +1,4 @@
-// Import Link to navigate to shop if cart is empty
+// Import Link to navigate to shop if cart is empty, and to checkout page
 import { Link } from 'react-router-dom';
 
 // Import useCart hook to access cart data and functions
@@ -7,7 +7,7 @@ import { useCart } from '../context/CartContext';
 function CartPage() {
 
   // Get cart items and functions from our shared cart context
-  const { cartItems, removeFromCart, getCartTotal } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
 
   // If cart is empty, show a friendly message with a link to shop
   if (cartItems.length === 0) {
@@ -74,9 +74,46 @@ function CartPage() {
               </p>
             </div>
 
-            {/* Quantity */}
-            <div style={{ fontSize: '15px', color: '#666' }}>
-              Qty: {item.quantity}
+            {/* Quantity controls - minus button, count, plus button */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {/* Decrease quantity button */}
+              <button
+                onClick={() => updateQuantity(item.id, -1)}
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '6px',
+                  border: '1px solid #e91e8c',
+                  backgroundColor: 'white',
+                  color: '#e91e8c',
+                  cursor: 'pointer',
+                  fontSize: '16px'
+                }}
+              >
+                -
+              </button>
+
+              {/* Current quantity number */}
+              <span style={{ fontSize: '15px', minWidth: '20px', textAlign: 'center' }}>
+                {item.quantity}
+              </span>
+
+              {/* Increase quantity button */}
+              <button
+                onClick={() => updateQuantity(item.id, 1)}
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '6px',
+                  border: '1px solid #e91e8c',
+                  backgroundColor: 'white',
+                  color: '#e91e8c',
+                  cursor: 'pointer',
+                  fontSize: '16px'
+                }}
+              >
+                +
+              </button>
             </div>
 
             {/* Price for this line (price × quantity) */}
@@ -116,20 +153,22 @@ function CartPage() {
         <h2 style={{ color: '#e91e8c', margin: 0 }}>£{getCartTotal().toFixed(2)}</h2>
       </div>
 
-      {/* Checkout button - will connect to delivery/payment later */}
+      {/* Checkout button - navigates to the checkout form page */}
       <div style={{ textAlign: 'center', marginTop: '25px' }}>
-        <button style={{
-          backgroundColor: '#e91e8c',
-          color: 'white',
-          border: 'none',
-          padding: '14px 40px',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontSize: '16px',
-          fontWeight: 'bold'
-        }}>
-          Proceed to Checkout
-        </button>
+        <Link to="/checkout">
+          <button style={{
+            backgroundColor: '#e91e8c',
+            color: 'white',
+            border: 'none',
+            padding: '14px 40px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold'
+          }}>
+            Proceed to Checkout
+          </button>
+        </Link>
       </div>
 
     </div>

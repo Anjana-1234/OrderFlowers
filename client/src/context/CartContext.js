@@ -35,6 +35,28 @@ export function CartProvider({ children }) {
     setCartItems((prevItems) => prevItems.filter((i) => i.id !== id));
   }
 
+  // Function to change the quantity of a specific item (+1 or -1)
+  function updateQuantity(id, amount) {
+    setCartItems((prevItems) => {
+      return prevItems
+        .map((item) => {
+          if (item.id === id) {
+            // Calculate new quantity based on +1 or -1 passed in
+            const newQuantity = item.quantity + amount;
+            return { ...item, quantity: newQuantity };
+          }
+          return item;
+        })
+        // Remove any item whose quantity dropped to 0 or below
+        .filter((item) => item.quantity > 0);
+    });
+  }
+
+  // Function to empty the entire cart - called after a successful order
+  function clearCart() {
+    setCartItems([]);
+  }
+
   // Function to calculate the total price of everything in the cart
   function getCartTotal() {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -48,7 +70,15 @@ export function CartProvider({ children }) {
   // Provide these values and functions to any page that needs them
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, getCartTotal, getCartCount }}
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        getCartTotal,
+        getCartCount,
+      }}
     >
       {children}
     </CartContext.Provider>
