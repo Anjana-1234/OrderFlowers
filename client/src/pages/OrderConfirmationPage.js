@@ -71,11 +71,20 @@ function OrderConfirmationPage() {
         <p style={{ margin: '5px 0' }}><strong>Order ID:</strong> {order._id}</p>
         <p style={{ margin: '5px 0' }}><strong>Status:</strong> {order.status}</p>
         <p style={{ margin: '5px 0' }}>
-          <strong>Payment:</strong> {order.paymentMethod === 'card' ? ' Card' : ' Cash on Delivery'}
+          <strong>Payment:</strong> {order.paymentMethod === 'card' ? '💳 Card' : '💵 Cash on Delivery'}
           {' '}({order.paymentStatus === 'paid' ? 'Paid' : 'Pay on delivery'})
         </p>
-        <p style={{ margin: '5px 0' }}><strong>Delivery Address:</strong> {order.address}</p>
+
+        <hr style={{ margin: '15px 0', border: 'none', borderTop: '1px solid #e91e8c' }} />
+
+        <p style={{ margin: '5px 0' }}><strong>Email:</strong> {order.email}</p>
         <p style={{ margin: '5px 0' }}><strong>Phone:</strong> {order.phone}</p>
+        <p style={{ margin: '5px 0' }}><strong>Delivery Address:</strong> {order.address}</p>
+        <p style={{ margin: '5px 0' }}><strong>Delivery Date:</strong> {order.deliveryDate}</p>
+        <p style={{ margin: '5px 0' }}><strong>Delivery Time:</strong> {order.deliveryTime}</p>
+        {order.specialInstructions && (
+          <p style={{ margin: '5px 0' }}><strong>Special Instructions:</strong> {order.specialInstructions}</p>
+        )}
 
         <hr style={{ margin: '15px 0', border: 'none', borderTop: '1px solid #e91e8c' }} />
 
