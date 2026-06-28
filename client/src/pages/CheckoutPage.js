@@ -21,8 +21,12 @@ function CheckoutPage() {
   // Holds the values typed into the form
   const [formData, setFormData] = useState({
     customerName: '',
-    address: '',
+    email: '',
     phone: '',
+    address: '',
+    deliveryDate: '',
+    deliveryTime: 'Anytime',
+    specialInstructions: '',
   });
 
   // Tracks which payment method the user picked - "card" or "cash"
@@ -42,12 +46,25 @@ function CheckoutPage() {
     });
   }
 
+  // Returns today's date in YYYY-MM-DD format, used to stop users picking a past delivery date
+  function getTodayDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   // Builds the order data object shared by both payment methods
   function buildOrderData() {
     return {
       customerName: formData.customerName,
-      address: formData.address,
+      email: formData.email,
       phone: formData.phone,
+      address: formData.address,
+      deliveryDate: formData.deliveryDate,
+      deliveryTime: formData.deliveryTime,
+      specialInstructions: formData.specialInstructions,
       items: cartItems.map((item) => ({
         name: item.name,
         price: item.price,
@@ -149,9 +166,12 @@ function CheckoutPage() {
       {/* Delivery details form */}
       <form onSubmit={handleSubmit}>
 
+        <h3 style={{ color: '#e91e8c', marginBottom: '12px' }}>Delivery Details</h3>
+
+        {/* Full Name */}
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Full Name
+            Full Name*
           </label>
           <input
             type="text"
@@ -169,9 +189,52 @@ function CheckoutPage() {
           />
         </div>
 
+        {/* Email */}
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Delivery Address
+            Email*
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            style={{
+              width: '100%',
+              padding: '10px',
+              borderRadius: '6px',
+              border: '1px solid #ccc',
+              fontSize: '14px'
+            }}
+          />
+        </div>
+
+        {/* Phone */}
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Phone*
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+            style={{
+              width: '100%',
+              padding: '10px',
+              borderRadius: '6px',
+              border: '1px solid #ccc',
+              fontSize: '14px'
+            }}
+          />
+        </div>
+
+        {/* Address */}
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Address*
           </label>
           <textarea
             name="address"
@@ -190,16 +253,18 @@ function CheckoutPage() {
           />
         </div>
 
-        <div style={{ marginBottom: '20px' }}>
+        {/* Delivery Date */}
+        <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Phone Number
+            Delivery Date*
           </label>
           <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
+            type="date"
+            name="deliveryDate"
+            value={formData.deliveryDate}
             onChange={handleChange}
             required
+            min={getTodayDate()} // prevents selecting a date before today
             style={{
               width: '100%',
               padding: '10px',
@@ -210,10 +275,56 @@ function CheckoutPage() {
           />
         </div>
 
+        {/* Delivery Time */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Delivery Time
+          </label>
+          <select
+            name="deliveryTime"
+            value={formData.deliveryTime}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              padding: '10px',
+              borderRadius: '6px',
+              border: '1px solid #ccc',
+              fontSize: '14px'
+            }}
+          >
+            <option value="Anytime">Anytime</option>
+            <option value="Morning (9am-12pm)">Morning (9am-12pm)</option>
+            <option value="Afternoon (12pm-5pm)">Afternoon (12pm-5pm)</option>
+            <option value="Evening (5pm-9pm)">Evening (5pm-9pm)</option>
+          </select>
+        </div>
+
+        {/* Special Instructions */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Special Instructions
+          </label>
+          <textarea
+            name="specialInstructions"
+            value={formData.specialInstructions}
+            onChange={handleChange}
+            rows="2"
+            placeholder="e.g. leave at front desk, gift message, ring doorbell..."
+            style={{
+              width: '100%',
+              padding: '10px',
+              borderRadius: '6px',
+              border: '1px solid #ccc',
+              fontSize: '14px',
+              fontFamily: 'inherit'
+            }}
+          />
+        </div>
+
         {/* Payment method selection */}
         <div style={{ marginBottom: '20px' }}>
           <label style={{ display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>
-            Payment Method
+            Payment Method*
           </label>
 
           <div style={{ display: 'flex', gap: '12px' }}>
@@ -236,7 +347,7 @@ function CheckoutPage() {
                 checked={paymentMethod === 'card'}
                 onChange={() => setPaymentMethod('card')}
               />
-               Pay with Card
+              Online Payment
             </label>
 
             {/* Cash option */}
@@ -257,7 +368,7 @@ function CheckoutPage() {
                 checked={paymentMethod === 'cash'}
                 onChange={() => setPaymentMethod('cash')}
               />
-               Cash on Delivery
+              Cash on Delivery
             </label>
 
           </div>
