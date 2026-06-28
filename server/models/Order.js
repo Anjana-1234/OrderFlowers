@@ -27,8 +27,8 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
 
-  // Customer's delivery address
-  address: {
+  // Customer's email - useful for sending order confirmations later
+  email: {
     type: String,
     required: true,
   },
@@ -37,6 +37,31 @@ const orderSchema = new mongoose.Schema({
   phone: {
     type: String,
     required: true,
+  },
+
+  // Customer's delivery address
+  address: {
+    type: String,
+    required: true,
+  },
+
+  // The date the customer wants their flowers delivered
+  deliveryDate: {
+    type: String,
+    required: true,
+  },
+
+  // Preferred delivery time window - optional, defaults to "Anytime"
+  deliveryTime: {
+    type: String,
+    enum: ['Anytime', 'Morning (9am-12pm)', 'Afternoon (12pm-5pm)', 'Evening (5pm-9pm)'],
+    default: 'Anytime',
+  },
+
+  // Any special notes from the customer - e.g. "leave at front desk", gift message, etc.
+  specialInstructions: {
+    type: String,
+    default: '',
   },
 
   // Order status - tracks where the order is in its lifecycle
